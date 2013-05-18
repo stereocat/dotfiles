@@ -1,0 +1,6 @@
+set line /dev/ttyS0
+set speed 9600
+set stop-bits 1
+set flow-control none
+set parity none
+set carrier-watch off
