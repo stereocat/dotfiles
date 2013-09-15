@@ -466,6 +466,10 @@ type1 はセパレータを消去するもの。")
       (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
 
+;; rack-mode
+(autoload 'racc-mode "racc-mode" "alternate mode for editing racc files" t)
+(setq auto-mode-alist (append '(("\\.ry$" . racc-mode)) auto-mode-alist))
+
 ;; cucumber
 ;; https://github.com/michaelklishin/cucumber.el
 (require 'feature-mode)
@@ -566,3 +570,7 @@ type1 はセパレータを消去するもの。")
   (flymake-mode t))
 
 (add-hook 'cperl-mode-hook 'flymake-perl-load)
+
+;; markdown mode
+(autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
+(setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
