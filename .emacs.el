@@ -448,6 +448,10 @@ type1 はセパレータを消去するもの。")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Major Mode Settings
 
+;; flymake (Emacs22から標準添付されている)
+;; http://d.hatena.ne.jp/antipop/20080701/1214838633
+(require 'flymake)
+
 ;; ruby-mode setting
 (setq ruby-indent-tabs-mode nil)
 (setq ruby-deep-indent-paren-style nil)
@@ -465,6 +469,30 @@ type1 はセパレータを消去するもの。")
     (when indent
       (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
+
+;; Flymake ruby
+;; EmacsWiki: Flymake Ruby http://www.emacswiki.org/emacs/FlymakeRuby
+
+;; Invoke ruby with '-c' to get syntax checking
+(defun flymake-ruby-init ()
+  (let* ((temp-file   (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+	 (local-file  (file-relative-name
+                       temp-file
+                       (file-name-directory buffer-file-name))))
+    (list "ruby" (list "-c" local-file))))
+
+(push '(".+\\.rb$" flymake-ruby-init) flymake-allowed-file-name-masks)
+(push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
+
+(push '("^\\(.*\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3) flymake-err-line-patterns)
+
+(add-hook 'ruby-mode-hook
+          '(lambda ()
+	     ;; Don't want flymake mode for ruby regions in rhtml files and also on read only files
+	     (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
+		 (flymake-mode))
+	     ))
 
 ;; rack-mode
 (autoload 'racc-mode "racc-mode" "alternate mode for editing racc files" t)
@@ -507,10 +535,7 @@ type1 はセパレータを消去するもの。")
 (setq fill-column 79)
 (setq auto-fill-mode t)
 
-;; flymake (Emacs22から標準添付されている)
-;; http://d.hatena.ne.jp/antipop/20080701/1214838633
 
-(require 'flymake)
 
 ;; set-perl5lib
 ;; 開いたスクリプトのパスに応じて、@INCにlibを追加してくれる
