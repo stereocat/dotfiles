@@ -599,3 +599,11 @@ type1 はセパレータを消去するもの。")
 ;; markdown mode
 (autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
+
+;; haml-mode
+(require 'haml-mode)
+(setq auto-mode-alist (cons '("\\.haml" . haml-mode) auto-mode-alist))
+(add-hook 'haml-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode nil)
+            (define-key haml-mode-map "\C-m" 'newline-and-indent)))
