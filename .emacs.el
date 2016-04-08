@@ -7,9 +7,9 @@
       (setq font-lock-maximum-decoration t)
       (global-font-lock-mode t)
       ;; hide tool-bar and scroll-bar
-      (menu-bar-mode nil)
-      (tool-bar-mode nil)
-      (scroll-bar-mode nil)
+      (menu-bar-mode 0)
+      (tool-bar-mode 0)
+      (scroll-bar-mode 0)
       ;; notice: keybind collision with screen/tmux
       (global-set-key "\C-t" 'hippie-expand)
       (windmove-default-keybindings)
@@ -57,9 +57,9 @@
     (setq font-lock-maximum-decoration t)
     (global-set-key "\C-q" 'hippie-expand)
     (global-font-lock-mode t)
-    (menu-bar-mode nil)
-    (tool-bar-mode nil)
-    (scroll-bar-mode nil)
+    (menu-bar-mode 0)
+    (tool-bar-mode 0)
+    (scroll-bar-mode 0)
 
     ;; interminal, cannot use S-<up|down|left|right> (why?)
     (windmove-default-keybindings)
