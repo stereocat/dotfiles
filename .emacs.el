@@ -49,7 +49,8 @@
 	   )))
       (ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
       (ad-activate 'font-lock-mode)
-
+      ;; For ubuntu desktop
+      (set-face-attribute 'default nil :family "Noto Sans Mono CJK JP")
       )
   (progn
     ;; if use in terminal
@@ -253,7 +254,8 @@
   (switch-to-buffer (my-visible-buffer (buffer-list))))
 (defun my-kill-buffer (buf)
   (interactive "bKill buffer: ")
-  (make-local-hook 'kill-buffer-hook)
+  (if (fboundp 'make-local-hook)
+      (make-local-hook 'kill-buffer-hook))
   (add-hook 'kill-buffer-hook 'my-bury-buffer nil t)
   (kill-buffer buf))
 (global-set-key "\C-xk" 'my-kill-buffer)
@@ -446,6 +448,21 @@ type1 はセパレータを消去するもの。")
   (add-hook 'after-init-hook 'session-initialize))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; migemo
+
+(when (and (executable-find "cmigemo")
+           (require 'migemo nil t))
+  (setq migemo-options '("-q" "--emacs"))
+
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (load-library "migemo")
+  (migemo-init)
+  (setq migemo-command "cmigemo")
+  (setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Major Mode Settings
 
 ;; flymake (Emacs22から標準添付されている)
@@ -596,10 +613,12 @@ type1 はセパレータを消去するもの。")
 
 (add-hook 'cperl-mode-hook 'flymake-perl-load)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; markdown mode
 (autoload 'markdown-mode "markdown-mode.el" "Major mode for editing Markdown files" t)
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; haml-mode
 (require 'haml-mode)
 (setq auto-mode-alist (cons '("\\.haml" . haml-mode) auto-mode-alist))
@@ -607,3 +626,13 @@ type1 はセパレータを消去するもの。")
           (lambda ()
             (setq indent-tabs-mode nil)
             (define-key haml-mode-map "\C-m" 'newline-and-indent)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ReStructured Text
+
+(require 'rst)
+(setq auto-mode-alist
+      (append '(("\\.txt\\'" . rst-mode)
+                ("\\.rst\\'" . rst-mode)
+                ("\\.rest\\'" . rst-mode)) auto-mode-alist))
+
