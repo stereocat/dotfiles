@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DOT_DIR="$HOME/dotfiles"
-DOT_FILES=".screenrc .tmux.conf .emacs.el"
+DOT_FILES=".screenrc .tmux.conf .emacs.el .latexmkrc"
 case $1 in
     install)
 	for file in $DOT_FILES
