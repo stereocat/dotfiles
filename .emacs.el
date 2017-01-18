@@ -546,7 +546,11 @@ type1 はセパレータを消去するもの。")
  '(cperl-indent-level 4)
  '(cperl-indent-parens-as-block t)
  '(cperl-tab-always-indent t)
- '(safe-local-variable-values (quote ((TeX-master . main\.tex)))))
+ '(safe-local-variable-values
+   (quote
+    ((syntax . elisp)
+     (TeX-master . "main.tex")
+     (TeX-master . main\.tex)))))
 
 ;; Insert spaces instead of tabs
 (setq-default indent-tabs-mode nil)
@@ -642,6 +646,8 @@ type1 はセパレータを消去するもの。")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; yatex
+;; YaTeX - TeX Wiki https://texwiki.texjp.org/?YaTeX
+
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq auto-mode-alist
       (append '(("\\.tex$" . yatex-mode)
@@ -687,6 +693,38 @@ type1 はセパレータを消去するもの。")
 ;(setq tex-pdfview-command "texworks")
 ;(setq tex-pdfview-command "texstudio --pdf-viewer-only")
 (setq dviprint-command-format "xdg-open `echo %s | sed -e \"s/\\.[^.]*$/\\.pdf/\"`")
+
+;; SyncTex, Linux/Evince
+;; forward search (emacs[C-c e] -> evince)
+;; https://texwiki.texjp.org/?YaTeX#h118b5e5
+;; with fwdevince https://texwiki.texjp.org/?Evince%2Ffwdevince%2FPython
+(defun evince-forward-search ()
+  (interactive)
+  (let* ((ctf (buffer-name))
+         (mtf)
+         (pf)
+         (ln (format "%d" (line-number-at-pos)))
+         (cmd "fwdevince")
+         (args))
+    (if (YaTeX-main-file-p)
+        (setq mtf (buffer-name))
+      (progn
+        (if (equal YaTeX-parent-file nil)
+            (save-excursion
+              (YaTeX-visit-main t)))
+        (setq mtf YaTeX-parent-file)))
+    (setq pf (concat (car (split-string mtf "\\.")) ".pdf"))
+    (setq args (concat pf " " ln " " ctf))
+    (message (concat cmd " " args))
+    (process-kill-without-query
+     (start-process-shell-command "fwdevince" nil cmd args))))
+
+(add-hook 'yatex-mode-hook
+          '(lambda ()
+             (define-key YaTeX-mode-map (kbd "C-c e") 'evince-forward-search)))
+
+;; inverse search (evince[Ctrl-left_click] -> emacs)
+;; https://texwiki.texjp.org/?cmd=read&page=Emacs&word=synctex#v19f2543
 (require 'dbus)
 (defun un-urlify (fname-or-url)
   "A trivial function that replaces a prefix of file:/// with just /."
