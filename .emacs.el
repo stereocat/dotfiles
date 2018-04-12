@@ -1,5 +1,12 @@
 ;;;; -*- mode: lisp-interaction; syntax: elisp; coding: utf-8 -*-
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (if window-system
     (progn
       ;; if use X
@@ -559,6 +566,7 @@ type1 はセパレータを消去するもの。")
  '(cperl-indent-level 4)
  '(cperl-indent-parens-as-block t)
  '(cperl-tab-always-indent t)
+ '(package-selected-packages (quote (company go-mode)))
  '(safe-local-variable-values
    (quote
     ((syntax . elisp)
@@ -816,3 +824,19 @@ type1 はセパレータを消去するもの。")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;;
+;; goalng mode
+;;
+(require 'go-mode)
+(require 'company-go)
+(add-hook 'go-mode-hook 'company-mode)
+(add-hook 'go-mode-hook 'flycheck-mode)
+(add-hook 'go-mode-hook (lambda()
+           (add-hook 'before-save-hook 'gofmt-before-save)
+           (local-set-key (kbd "M-.") 'godef-jump)
+           (set (make-local-variable 'company-backends) '(company-go))
+           (company-mode)
+           (setq indent-tabs-mode nil)    ; タブを利用
+           (setq c-basic-offset 4)        ; tabサイズを4にする
+           (setq tab-width 4)))
