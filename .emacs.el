@@ -826,17 +826,17 @@ type1 はセパレータを消去するもの。")
  )
 
 ;;
-;; goalng mode
+;; golang mode
 ;;
 (require 'go-mode)
-(require 'company-go)
-(add-hook 'go-mode-hook 'company-mode)
+;; (require 'company-go)
+;; (add-hook 'go-mode-hook 'company-mode)
 (add-hook 'go-mode-hook 'flycheck-mode)
 (add-hook 'go-mode-hook (lambda()
-           (add-hook 'before-save-hook 'gofmt-before-save)
+           ;; (add-hook 'before-save-hook 'gofmt-before-save)
            (local-set-key (kbd "M-.") 'godef-jump)
-           (set (make-local-variable 'company-backends) '(company-go))
-           (company-mode)
+           ;; (set (make-local-variable 'company-backends) '(company-go))
+           ;; (company-mode)
            (setq indent-tabs-mode nil)    ; タブを利用
            (setq c-basic-offset 4)        ; tabサイズを4にする
            (setq tab-width 4)))
