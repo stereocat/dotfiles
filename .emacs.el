@@ -21,6 +21,9 @@
       (global-set-key "\C-t" 'hippie-expand)
       (windmove-default-keybindings)
 
+      ;; enable copy/paste via clipboard (linux)
+      (setq x-select-enable-clipboard t)
+
       ;; color current line
       (require 'hl-line)
       (global-hl-line-mode t)
@@ -561,17 +564,20 @@ type1 はセパレータを消去するもの。")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(cperl-close-paren-offset -4)
  '(cperl-continued-statement-offset 4)
  '(cperl-indent-level 4)
  '(cperl-indent-parens-as-block t)
  '(cperl-tab-always-indent t)
- '(package-selected-packages (quote (company go-mode)))
+ '(package-selected-packages (quote (protobuf-mode company go-mode)))
  '(safe-local-variable-values
    (quote
     ((syntax . elisp)
      (TeX-master . "main.tex")
-     (TeX-master . main\.tex)))))
+     (TeX-master . main\.tex))))
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 
 ;; Insert spaces instead of tabs
 (setq-default indent-tabs-mode nil)
@@ -823,7 +829,7 @@ type1 はセパレータを消去するもの。")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:family "Takaoゴシック" :foundry "Taka" :slant normal :weight normal :height 120 :width normal)))))
 
 ;;
 ;; golang mode
@@ -840,3 +846,10 @@ type1 はセパレータを消去するもの。")
            (setq indent-tabs-mode nil)    ; タブを利用
            (setq c-basic-offset 4)        ; tabサイズを4にする
            (setq tab-width 4)))
+
+;; protobuf-mode
+(defconst my-protobuf-style
+  '((c-basic-offset . 2)
+    (indent-tabs-mode . nil)))
+(add-hook 'protobuf-mode-hook
+          (lambda () (c-add-style "my-style" my-protobuf-style t)))
