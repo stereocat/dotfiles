@@ -829,7 +829,11 @@ type1 はセパレータを消去するもの。")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+<<<<<<< Updated upstream
  '(default ((t (:family "Takaoゴシック" :foundry "Taka" :slant normal :weight normal :height 120 :width normal)))))
+=======
+ '(default ((t (:family "Takaoゴシック" :foundry "Taka" :slant normal :weight normal :height 150 :width normal)))))
+>>>>>>> Stashed changes
 
 ;;
 ;; golang mode
@@ -837,7 +841,11 @@ type1 はセパレータを消去するもの。")
 (require 'go-mode)
 ;; (require 'company-go)
 ;; (add-hook 'go-mode-hook 'company-mode)
+<<<<<<< Updated upstream
 (add-hook 'go-mode-hook 'flycheck-mode)
+=======
+;; (add-hook 'go-mode-hook 'flycheck-mode)
+>>>>>>> Stashed changes
 (add-hook 'go-mode-hook (lambda()
            ;; (add-hook 'before-save-hook 'gofmt-before-save)
            (local-set-key (kbd "M-.") 'godef-jump)
