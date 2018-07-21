@@ -107,8 +107,8 @@
 ;; ミニバッファを再帰的に呼びだせるようにする
 (setq enable-recursive-minibufferes t)
 ;; ダイアログボックスを使わないようにする
-(setq user-dialog-box nil)
-(defalias 'message-box nil)
+(setq use-dialog-box nil)
+(defalias 'message-box 'message)
 ;; 履歴をたくさん保存する
 (setq history-length 10000)
 ;; キーストロークをエコーエリアに早く表示する
@@ -570,7 +570,9 @@ type1 はセパレータを消去するもの。")
  '(cperl-indent-level 4)
  '(cperl-indent-parens-as-block t)
  '(cperl-tab-always-indent t)
- '(package-selected-packages (quote (protobuf-mode company go-mode)))
+ '(package-selected-packages
+   (quote
+    (json-reformat flymake-json json-mode protobuf-mode company go-mode)))
  '(safe-local-variable-values
    (quote
     ((syntax . elisp)
@@ -829,11 +831,19 @@ type1 はセパレータを消去するもの。")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-<<<<<<< Updated upstream
  '(default ((t (:family "Takaoゴシック" :foundry "Taka" :slant normal :weight normal :height 120 :width normal)))))
-=======
- '(default ((t (:family "Takaoゴシック" :foundry "Taka" :slant normal :weight normal :height 150 :width normal)))))
->>>>>>> Stashed changes
+
+;;
+;; MELPA
+;;   http://ergoemacs.org/emacs/emacs_package_system.html
+;; load emacs 24's package system. Add MELPA repository.
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list
+   'package-archives
+   ;; '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
+   '("melpa" . "http://melpa.milkbox.net/packages/")
+   t))
 
 ;;
 ;; golang mode
@@ -841,11 +851,7 @@ type1 はセパレータを消去するもの。")
 (require 'go-mode)
 ;; (require 'company-go)
 ;; (add-hook 'go-mode-hook 'company-mode)
-<<<<<<< Updated upstream
-(add-hook 'go-mode-hook 'flycheck-mode)
-=======
 ;; (add-hook 'go-mode-hook 'flycheck-mode)
->>>>>>> Stashed changes
 (add-hook 'go-mode-hook (lambda()
            ;; (add-hook 'before-save-hook 'gofmt-before-save)
            (local-set-key (kbd "M-.") 'godef-jump)
@@ -861,3 +867,14 @@ type1 はセパレータを消去するもの。")
     (indent-tabs-mode . nil)))
 (add-hook 'protobuf-mode-hook
           (lambda () (c-add-style "my-style" my-protobuf-style t)))
+
+;; javascript
+(setq js-indent-level 2)
+
+;; json
+(require 'flymake-json)
+;;(add-hook 'json-mode-hook 'flymake-json-load)
+;; (add-hook 'json-mode-hook
+;;           (lambda ()
+;;             (make-local-variable 'json-mode-indent-level)
+;;             (setq json-mode-indent-level 4))) ;; default tab 2
