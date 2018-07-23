@@ -217,7 +217,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; auto-install
 
-(setq load-path (cons "~/.emacs.d" load-path))
+(setq load-path (cons "~/.emacs.d/auto-install/" load-path))
 (require 'auto-install)
 (add-to-list 'load-path auto-install-directory)
 (auto-install-update-emacswiki-package-name t)
