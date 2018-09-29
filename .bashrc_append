@@ -1,0 +1,15 @@
+
+## begin dotfiles/setup.sh
+alias jqless='jq . -C | less -R'
+export GOPATH=~/go
+export PATH=$GOPATH/bin:$PATH
+
+## alternate tmux config: 'status-interval 1'
+## for zsh (pre-command hook)
+# function precmd() {
+#     if [ ! -z $TMUX ]; then
+#         tmux refresh-client -S
+#     fi
+# }
+
+## end dotfiles/setup.sh
