@@ -1,3 +1,13 @@
+## share history
+## http://iandeth.dyndns.org/mt/ian/archives/000651.html
+function share_history {
+    history -a
+    history -c
+    history -r
+}
+PROMPT_COMMAND='share_history'
+shopt -u histappend
+export HISTSIZE=15000
 
 ## begin dotfiles/setup.sh
 alias jqless='jq . -C | less -R'
