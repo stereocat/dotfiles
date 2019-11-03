@@ -16,8 +16,10 @@ case $1 in
 
         # append alias/env files to .bashrc
         BASHRC=~/.bashrc
-        sed -i -e "/^## begin dotfiles\/setup.sh/,/^## end dotfiles\/setup.sh/d" $BASHRC
-        cat .bashrc_append >> $BASHRC
+        sed -i -e "/^# begin dotfiles\/setup.sh/,/^# end dotfiles\/setup.sh/d" $BASHRC
+        echo "# begin dotfiles/setup.sh" >> $BASHRC
+        echo ". ~/dotfiles/.bashrc_append" >> $BASHRC
+        echo "# end dotfiles/setup.sh" >> $BASHRC
 
         for file in `ls $DOT_DIR/.emacs.d/`
         do

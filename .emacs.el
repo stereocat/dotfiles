@@ -37,9 +37,12 @@
       ;; paren face
       (show-paren-mode t)
       (setq show-paren-style 'expression)
-      (set-face-background 'show-paren-match-face "#006A6A")
-      (set-face-foreground 'show-paren-match-face nil)
-      (set-face-bold-p 'show-paren-match-face t)
+      (set-face-attribute 'show-paren-match nil
+                         :background "#006A6A"
+                         :weight 'bold)
+      ;; (set-face-background 'show-paren-match-face "#006A6A") ;; expired
+      ;; (set-face-foreground 'show-paren-match-face nil) ;; expired
+      ;; (set-face-bold-p 'show-paren-match-face t)
 
       ;; white space
       (defface my-face-b-1 '((t (:background "gray"))) nil)

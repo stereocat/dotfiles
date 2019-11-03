@@ -1,3 +1,57 @@
+# begin dotfiles/setup.sh
+
+## docker/peco
+
+alias dcls='docker container ls -a'
+alias dils='docker image ls'
+
+function peco_container {
+    local getpeco=$(docker container ls -a --format "{{.ID}}\t{{.Status}}\t{{.Names}}" | peco)
+    local container_name=$(echo "${getpeco}" | cut -f3)
+    echo "${container_name}"
+}
+export HISTIGNORE=${HISTIGNORE}:peco_container
+
+function drm {
+    local container_name=$(peco_container)
+    local cmd="docker rm -f ${container_name}"
+    echo ${cmd}
+    echo ${cmd} >> ~/.bash_history
+    eval ${cmd}
+}
+export HISTIGNORE=${HISTIGNORE}:drm
+
+function dsh {
+    local shell=${1:-sh}
+    local container_name=$(peco_container)
+    local cmd="docker exec -it ${container_name} /bin/${shell}"
+    echo ${cmd}
+    echo ${cmd} >> ~/.bash_history
+    eval ${cmd}
+}
+export HISTIGNORE=${HISTIGNORE}:dsh
+
+function dlog {
+    local tails=${1:-5}
+    local container_name=$(peco_container)
+    local cmd="docker logs --follow --timestamps --tail ${tails} ${container_name}"
+    echo ${cmd}
+    echo ${cmd} >> ~/.bash_history
+    eval ${cmd}
+}
+export HISTIGNORE=${HISTIGNORE}:dlog
+
+## History Configure
+function peco-history {
+    local COMMAND="$(history | tac | sed -e 's/^\s*[0-9]*\s*//' | awk '!a[$0]++' | grep -v "peco-history" | peco --query "$READLINE_LINE")"
+
+    if [ ! -z "${COMMAND}" ] ; then
+        READLINE_LINE="${COMMAND}"
+        READLINE_POINT=${#COMMAND}
+    fi
+}
+export HISTIGNORE=${HISTIGNORE}:peco-history
+
 ## share history
 ## http://iandeth.dyndns.org/mt/ian/archives/000651.html
 function share_history {
@@ -9,10 +63,10 @@ PROMPT_COMMAND='share_history'
 shopt -u histappend
 export HISTSIZE=15000
 
-## begin dotfiles/setup.sh
+## other aliases
 alias jqless='jq . -C | less -R'
-export GOPATH=~/go
-export PATH=$GOPATH/bin:$PATH
+# export GOPATH=~/go
+# export PATH=$GOPATH/bin:$PATH
 
 ## alternate tmux config: 'status-interval 1'
 ## for zsh (pre-command hook)
@@ -22,4 +76,22 @@ export PATH=$GOPATH/bin:$PATH
 #     fi
 # }
 
-## end dotfiles/setup.sh
+## Proxy configuration
+# PROXY="http://proxy:port/"
+if [ ! -z ${PROXY+x} ]
+then
+    export HTTP_PROXY=$PROXY
+    export HTTPS_PROXY=$PROXY
+    export FTS_PROXY=$PROXY
+    export NO_PROXY=localhost,127.0.0.0/8,::1
+    export http_proxy=$PROXY
+    export https_proxy=$PROXY
+    export ftp_proxy=$PROXY
+    export no_proxy=localhost,127.0.0.0/8,::1
+fi
+
+# rbenv (for Ubuntu)
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# end dotfiles/setup.sh
