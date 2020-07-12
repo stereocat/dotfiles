@@ -90,8 +90,17 @@ then
     export no_proxy=localhost,127.0.0.0/8,::1
 fi
 
-# rbenv (for Ubuntu)
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
+if [ -d $HOME/.anyenv ]
+then
+    # anyenv (for Ubuntu)
+    export PATH="$HOME/.anyenv/bin:$PATH"
+    eval "$(anyenv init -)"
+    # for rubymine interpreter search
+    ln -s $HOME/.anyenv/envs/rbenv $HOME/.rbenv 2> /dev/null
+elif [ -d $HOME/.rbenv ]
+then
+    # rbenv (for Ubuntu)
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+fi
 # end dotfiles/setup.sh

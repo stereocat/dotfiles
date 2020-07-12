@@ -6,7 +6,7 @@ case $1 in
     install)
         for file in $DOT_FILES
         do
-            ln -s $DOT_DIR/$file $HOME/$file
+            ln -s $DOT_DIR/$file $HOME/$file 2>/dev/null
         done
 
         if [ ! -e $HOME/.emacs.d ]
@@ -23,7 +23,7 @@ case $1 in
 
         for file in `ls $DOT_DIR/.emacs.d/`
         do
-            ln -s $DOT_DIR/.emacs.d/$file $HOME/.emacs.d/$file
+            ln -s $DOT_DIR/.emacs.d/$file $HOME/.emacs.d/$file 2>/dev/null
         done
         ;;
     clean)
