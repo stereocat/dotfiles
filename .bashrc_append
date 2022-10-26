@@ -1,5 +1,9 @@
 # begin dotfiles/setup.sh
 
+## tty setting
+
+stty stop undef
+
 ## docker/peco
 
 alias dcls='docker container ls -a'
@@ -42,6 +46,7 @@ function dlog {
 export HISTIGNORE=${HISTIGNORE}:dlog
 
 ## History Configure
+
 function peco-history {
     local COMMAND="$(history | tac | sed -e 's/^\s*[0-9]*\s*//' | awk '!a[$0]++' | grep -v "peco-history" | peco --query "$READLINE_LINE")"
 
