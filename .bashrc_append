@@ -67,9 +67,12 @@ function share_history {
 PROMPT_COMMAND='share_history'
 shopt -u histappend
 export HISTSIZE=15000
+# do not record duplicated history and lines that head is space
+export HISTCONTROL=ignoreboth
 
 ## other aliases
 alias jqless='jq . -C | less -R'
+alias jqp='LANG=en_US.UTF-8 jqp'
 # export GOPATH=~/go
 # export PATH=$GOPATH/bin:$PATH
 

@@ -75,6 +75,15 @@
     (tool-bar-mode 0)
     (scroll-bar-mode 0)
 
+    ;; color current line
+    (require 'hl-line)
+    (global-hl-line-mode t)
+    (setq load-path (cons "~/.emacs.d/col-highlight/" load-path))
+    (require 'col-highlight)
+    (column-highlight-mode)
+    (custom-set-faces
+     '(col-highlight ((t (:inherit hl-line)))))
+
     ;; interminal, cannot use S-<up|down|left|right> (why?)
     (windmove-default-keybindings)
     (global-set-key (kbd "C-c <left>")  'windmove-left)
